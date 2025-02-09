@@ -46,6 +46,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+
+//    runtimeOnly("io.github.oshai:kotlin-logging:7.0.4")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
