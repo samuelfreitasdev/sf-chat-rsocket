@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: sf-chat-service
+  data:
+    mongodb:
+      uri: mongodb://localhost/sf-chat-service
+      host: localhost
+      port: 27017
+      database: sf-chat-service
+      auto-index-creation: true
+      uuid-representation: standard
+  rsocket:
+    server:
+      mapping-path: /rsocket
+      transport: websocket
+      port: 9090
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/auth/realms/chat
+
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://service-discovery:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+#server:
+#  port: 8080
