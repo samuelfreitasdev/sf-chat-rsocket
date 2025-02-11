@@ -44,6 +44,23 @@ services:
 #    depends_on:
 #      - mongo
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.0
+    ports:
+      - "8081:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    #    volumes:
+    #      - keycloak:/opt/keycloak/data/
+    restart: always
+    command:
+      - "start-dev"
+    networks:
+      - backend
+
 networks:
   frontend:
     driver: bridge

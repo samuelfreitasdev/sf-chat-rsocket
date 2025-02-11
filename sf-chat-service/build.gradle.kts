@@ -38,26 +38,22 @@ dependencies {
     implementation("org.springframework.security:spring-security-rsocket")
     implementation("org.springframework.security:spring-security-messaging")
 
-//    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
-//    implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
-
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
-//    runtimeOnly("io.github.oshai:kotlin-logging:7.0.4")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
-
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
 
@@ -68,6 +64,8 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mongodb")
 
+    testImplementation("org.keycloak:keycloak-admin-client:26.0.4")
+//    testImplementation("org.keycloak:keycloak-admin-client:20.0.3")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

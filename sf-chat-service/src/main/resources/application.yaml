@@ -18,7 +18,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/auth/realms/chat
+          issuer-uri: http://localhost:8081/realms/chat
+#          issuer-uri: http://localhost:8081/auth/realms/chat
+#          issuer-uri: http://localhost:8081/auth/realms/chat
+#  main:
+#    allow-bean-definition-overriding: true
 
 eureka:
   client:
