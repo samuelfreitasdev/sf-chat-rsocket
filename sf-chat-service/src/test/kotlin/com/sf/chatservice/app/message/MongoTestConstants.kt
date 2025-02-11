@@ -1,7 +1,4 @@
-package com.sf.chatservice.message
-
-import org.testcontainers.containers.wait.strategy.AbstractWaitStrategy
-import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
+package com.sf.chatservice.app.message
 
 object MongoTestConstants {
 

@@ -1,5 +1,12 @@
-package com.sf.chatservice
+package com.sf.chatservice.app
 
+import com.sf.chatservice.ChatApplication
+import com.sf.chatservice.app.RSocketConstants.SIMPLE_AUTH
+import com.sf.chatservice.chats.repository.UserChatsPort
+import com.sf.chatservice.keycloak.KeyCloakAccess
+import com.sf.chatservice.keycloak.KeyCloakContainer
+import com.sf.chatservice.keycloak.KeyCloakProperties
+import com.sf.chatservice.keycloak.KeycloakInitializers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -8,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.rsocket.server.LocalRSocketServerPort
 import org.springframework.messaging.rsocket.RSocketRequester
+import org.springframework.messaging.rsocket.RSocketStrategies
+import org.springframework.security.rsocket.metadata.BearerTokenAuthenticationEncoder
+import org.springframework.security.rsocket.metadata.BearerTokenMetadata
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import java.net.URI
-
 
 @SpringBootTest(
     classes = [ChatApplication::class],
@@ -20,6 +30,7 @@ import java.net.URI
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestPropertySource(properties = ["spring.rsocket.server.port=0"])
 @DirtiesContext
+@ActiveProfiles(value = ["test"])
 class ChatBaseTest {
 
     @LocalRSocketServerPort
@@ -27,6 +38,9 @@ class ChatBaseTest {
 
     @Autowired
     protected lateinit var builder: RSocketRequester.Builder
+
+    @Autowired
+    protected lateinit var userChatsRepository: UserChatsPort
 
     protected var requesterUser1: RSocketRequester? = null
     protected var requesterUser2: RSocketRequester? = null
@@ -46,6 +60,8 @@ class ChatBaseTest {
 
     @AfterEach
     fun tearDown() {
+        userChatsRepository.clear().blockLast()
+
 //        val clearUserChatMappings: Unit = chatRoomUserMappings.clear()
 //        val deleteMessages: Unit = messageRepository.deleteAll()
 //        val clearUser1Token: Unit = userResumeTokenService.deleteTokenForUser(USER_1)
@@ -55,19 +71,31 @@ class ChatBaseTest {
     }
 
     private fun setupUser1Requester(): RSocketRequester {
-        return setupRequesterFor("user2")
+        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken1())
     }
 
     private fun setupUser2Requester(): RSocketRequester {
-        return setupRequesterFor("user1")
+        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken2())
     }
 
     private fun setupRequesterFor(token: String): RSocketRequester {
         return builder
-            .tcp("localhost", port!!)
-//        return builder
-//            .rsocketStrategies()
-//            .websocket(URI.create("ws://localhost:$port"))
+            .setupMetadata(BearerTokenMetadata(token), SIMPLE_AUTH)
+            .rsocketStrategies { v: RSocketStrategies.Builder -> v.encoder(BearerTokenAuthenticationEncoder()) }
+            .websocket(URI.create("ws://localhost:$port"))
     }
 
+    companion object {
+        private val KEY_CLOAK_PROPERTIES: KeyCloakProperties = KeycloakInitializers.keyCloakProperties()
+        private val KEY_CLOAK_CONTAINER: KeyCloakContainer = KeyCloakContainer(KEY_CLOAK_PROPERTIES.adminUser)
+        private var KEY_CLOAK_ACCESS: KeyCloakAccess? = null
+
+        @JvmStatic
+        @BeforeAll
+        fun beforeAll() {
+            KEY_CLOAK_CONTAINER.start()
+            KeycloakInitializers.setupKeycloak(KEY_CLOAK_PROPERTIES, KEY_CLOAK_CONTAINER.firstMappedPort)
+            KEY_CLOAK_ACCESS = KeycloakInitializers.keycloak(KEY_CLOAK_PROPERTIES, KEY_CLOAK_CONTAINER)
+        }
+    }
 }
