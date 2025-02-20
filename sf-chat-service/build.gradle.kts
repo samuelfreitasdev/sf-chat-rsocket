@@ -25,8 +25,12 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2024.0.0"
+val mockitoAgent = configurations.create("mockitoAgent")
 
 dependencies {
+    implementation("io.netty:netty-all:4.1.118.Final")
+    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.118.Final")
+
     implementation("org.springframework.cloud:spring-cloud-starter")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -63,11 +67,15 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mongodb")
+    testImplementation("com.github.dasniko:testcontainers-keycloak:3.6.0")
+    testImplementation("org.testcontainers:mongodb:1.20.4")
 
     testImplementation("org.keycloak:keycloak-admin-client:26.0.4")
-//    testImplementation("org.keycloak:keycloak-admin-client:20.0.3")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("org.mockito:mockito-core:5.14.0")
+    mockitoAgent("org.mockito:mockito-core:5.14.0") { isTransitive = false }
 }
 
 dependencyManagement {
@@ -82,6 +90,8 @@ kotlin {
     }
 }
 
+
 tasks.withType<Test> {
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
     useJUnitPlatform()
 }
