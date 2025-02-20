@@ -18,7 +18,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/chat
+          issuer-uri: http://localhost:8081/realms/sf-chat
+#          issuer-uri: http://localhost:8081/realms/chat
 
 eureka:
   client:
