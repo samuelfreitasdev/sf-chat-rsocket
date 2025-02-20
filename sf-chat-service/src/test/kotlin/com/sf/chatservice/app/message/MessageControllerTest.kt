@@ -10,11 +10,16 @@ class MessageControllerTest : ChatBaseTest() {
 
     @Test
     fun userCanCreateChat() {
-        val result = requesterUser1!!.route("create-chat").data("create").retrieveMono(ChatCreatedResponse::class.java)
+        val result = requesterUser1!!
+            .route("create-chat")
+            .data("create")
+            .retrieveMono(ChatCreatedResponse::class.java)
 
-        StepVerifier.create(result, 1).consumeNextWith {
-            assertThat(it.chatId).isNotNull()
-        }.verifyComplete()
+        StepVerifier.create(result, 1)
+            .consumeNextWith {
+                assertThat(it.chatId).isNotNull()
+            }
+            .verifyComplete()
     }
 
 }
