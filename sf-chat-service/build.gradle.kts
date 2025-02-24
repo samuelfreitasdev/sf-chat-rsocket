@@ -34,11 +34,14 @@ dependencies {
     implementation("io.projectreactor:reactor-tools")
 
     implementation("org.springframework.cloud:spring-cloud-starter")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.0") // To spring cloud load balancer
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-rsocket")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
 
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.security:spring-security-rsocket")
