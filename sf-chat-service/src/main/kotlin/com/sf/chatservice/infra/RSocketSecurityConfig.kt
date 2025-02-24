@@ -16,7 +16,6 @@ import org.springframework.security.rsocket.core.PayloadSocketAcceptorIntercepto
 
 @Configuration
 @EnableRSocketSecurity
-//@EnableWebSecurity
 @EnableReactiveMethodSecurity
 class RSocketSecurityConfig(
     @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
@@ -26,8 +25,8 @@ class RSocketSecurityConfig(
     @Bean
     fun messageHandler(strategies: RSocketStrategies): RSocketMessageHandler {
         return RSocketMessageHandler()
-            .apply { setRSocketStrategies(strategies) }
             .apply { argumentResolverConfigurer.addCustomResolver(AuthenticationPrincipalArgumentResolver()) }
+            .apply { setRSocketStrategies(strategies) }
     }
 
     @Bean
@@ -45,7 +44,5 @@ class RSocketSecurityConfig(
 
     @Bean
     fun jwtDecoder(): ReactiveJwtDecoder = ReactiveJwtDecoders.fromIssuerLocation(issuer)
-//    fun jwtDecoder(): JwtDecoder = ReactiveJwtDecoders.fromIssuerLocation(issuer)
-//    fun jwtDecoder(): JwtDecoder = NimbusReactiveJwtDecoder.withIssuerLocation(issuer)
 
 }
