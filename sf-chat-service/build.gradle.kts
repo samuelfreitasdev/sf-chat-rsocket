@@ -31,6 +31,8 @@ dependencies {
     implementation("io.netty:netty-all:4.1.118.Final")
     runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.118.Final")
 
+    implementation("io.projectreactor:reactor-tools")
+
     implementation("org.springframework.cloud:spring-cloud-starter")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -90,8 +92,12 @@ kotlin {
     }
 }
 
-
 tasks.withType<Test> {
     jvmArgs("-javaagent:${mockitoAgent.asPath}")
     useJUnitPlatform()
 }
+
+//buildScan {
+//    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+//    termsOfServiceAgree = "no"
+//}
