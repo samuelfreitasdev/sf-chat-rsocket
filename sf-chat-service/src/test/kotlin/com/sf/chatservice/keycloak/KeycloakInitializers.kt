@@ -1,5 +1,6 @@
 package com.sf.chatservice.keycloak
 
+import dasniko.testcontainers.keycloak.KeycloakContainer
 import org.keycloak.admin.client.KeycloakBuilder
 import org.keycloak.representations.idm.ClientRepresentation
 import org.keycloak.representations.idm.CredentialRepresentation
@@ -18,8 +19,9 @@ object KeycloakInitializers {
         return KeyCloakProperties(client, KeyCloakProperties.ADMIN_CLI_CLIENT, user1, user2, admin, "realm")
     }
 
-    fun keycloak(keyCloakProperties: KeyCloakProperties, keyCloakContainer: KeyCloakContainer): KeyCloakAccess {
-        val serverUrl = String.format("http://localhost:%s/auth", keyCloakContainer.firstMappedPort)
+    fun keycloak(keyCloakProperties: KeyCloakProperties, keyCloakContainer: KeycloakContainer): KeyCloakAccess {
+        val serverUrl = "http://localhost:${keyCloakContainer.firstMappedPort}/auth"
+
         val adminAccess = KeycloakBuilder.builder()
             .serverUrl(serverUrl)
             .realm("master")
@@ -44,17 +46,21 @@ object KeycloakInitializers {
             .username(keyCloakProperties.user2.username)
             .password(keyCloakProperties.user2.password)
             .build()
+
         return KeyCloakAccess(adminAccess, user1access, user2Access)
     }
 
     fun setupKeycloak(
+        keyCloakContainer: KeycloakContainer,
         keyCloakProperties: KeyCloakProperties,
-        port: Int
     ) {
+        keyCloakContainer.authServerUrl
+
         val keycloak = KeycloakBuilder.builder()
-            .serverUrl(String.format("http://localhost:%s/auth", port))
-            .realm("master")
-            .clientId(keyCloakProperties.admin.clientId)
+            .serverUrl(keyCloakContainer.authServerUrl)
+            .realm(KeycloakContainer.MASTER_REALM)
+//            .clientId(keyCloakProperties.admin.clientId)
+            .clientId(KeycloakContainer.ADMIN_CLI_CLIENT)
             .username(keyCloakProperties.adminUser.username)
             .password(keyCloakProperties.adminUser.password)
             .build()

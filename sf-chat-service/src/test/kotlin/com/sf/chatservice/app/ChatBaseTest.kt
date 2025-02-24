@@ -1,12 +1,7 @@
 package com.sf.chatservice.app
 
 import com.sf.chatservice.ChatApplication
-import com.sf.chatservice.app.RSocketConstants.SIMPLE_AUTH
 import com.sf.chatservice.chats.repository.UserChatsPort
-import com.sf.chatservice.keycloak.KeyCloakAccess
-import com.sf.chatservice.keycloak.KeyCloakContainer
-import com.sf.chatservice.keycloak.KeyCloakProperties
-import com.sf.chatservice.keycloak.KeycloakInitializers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -14,14 +9,16 @@ import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.rsocket.server.LocalRSocketServerPort
+import org.springframework.context.annotation.Import
 import org.springframework.messaging.rsocket.RSocketRequester
 import org.springframework.messaging.rsocket.RSocketStrategies
 import org.springframework.security.rsocket.metadata.BearerTokenAuthenticationEncoder
-import org.springframework.security.rsocket.metadata.BearerTokenMetadata
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.net.URI
+
 
 @SpringBootTest(
     classes = [ChatApplication::class],
@@ -31,6 +28,8 @@ import java.net.URI
 @TestPropertySource(properties = ["spring.rsocket.server.port=0"])
 @DirtiesContext
 @ActiveProfiles(value = ["test"])
+@Testcontainers
+@Import(ContainersConfig::class)
 class ChatBaseTest {
 
     @LocalRSocketServerPort
@@ -45,7 +44,6 @@ class ChatBaseTest {
     protected var requesterUser1: RSocketRequester? = null
     protected var requesterUser2: RSocketRequester? = null
 
-
     @BeforeAll
     fun setupOnce() {
         requesterUser1 = setupUser1Requester()
@@ -54,8 +52,8 @@ class ChatBaseTest {
 
     @AfterAll
     fun afterAllTearDown() {
-        requesterUser1!!.dispose()
-        requesterUser2!!.dispose()
+//        requesterUser1!!.dispose()
+//        requesterUser2!!.dispose()
     }
 
     @AfterEach
@@ -71,31 +69,67 @@ class ChatBaseTest {
     }
 
     private fun setupUser1Requester(): RSocketRequester {
-        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken1())
+//        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken1())
+        return setupRequesterFor("")
     }
 
     private fun setupUser2Requester(): RSocketRequester {
-        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken2())
+//        return setupRequesterFor(KEY_CLOAK_ACCESS!!.getToken2())
+        return setupRequesterFor("")
     }
 
     private fun setupRequesterFor(token: String): RSocketRequester {
         return builder
-            .setupMetadata(BearerTokenMetadata(token), SIMPLE_AUTH)
+//            .setupMetadata(BearerTokenMetadata(token), SIMPLE_AUTH)
             .rsocketStrategies { v: RSocketStrategies.Builder -> v.encoder(BearerTokenAuthenticationEncoder()) }
             .websocket(URI.create("ws://localhost:$port"))
     }
 
-    companion object {
-        private val KEY_CLOAK_PROPERTIES: KeyCloakProperties = KeycloakInitializers.keyCloakProperties()
-        private val KEY_CLOAK_CONTAINER: KeyCloakContainer = KeyCloakContainer(KEY_CLOAK_PROPERTIES.adminUser)
-        private var KEY_CLOAK_ACCESS: KeyCloakAccess? = null
+    /*companion object {
+
+        private const val REALM = "sf-chat"
+
+        @Container
+        @JvmStatic
+        val keycloakContainer = KeycloakContainer("quay.i`o/keycloak/keycloak:latest")
+            .withAdminUsername("admin")
+            .withAdminPassword("admin")
+            .withRealmImportFile("sf-chat-realm.json")
+            .withExposedPorts(8080, 9000)
+            .waitingFor(HostPortWaitStrategy())
+            .apply { portBindings = listOf("8081", "8080") }
+
+//        private val KEY_CLOAK_PROPERTIES = KeycloakInitializers.keyCloakProperties()
 
         @JvmStatic
         @BeforeAll
         fun beforeAll() {
-            KEY_CLOAK_CONTAINER.start()
-            KeycloakInitializers.setupKeycloak(KEY_CLOAK_PROPERTIES, KEY_CLOAK_CONTAINER.firstMappedPort)
-            KEY_CLOAK_ACCESS = KeycloakInitializers.keycloak(KEY_CLOAK_PROPERTIES, KEY_CLOAK_CONTAINER)
+//            KeycloakInitializers.setupKeycloak(KEY_CLOAK_CONTAINER, KEY_CLOAK_PROPERTIES)
+\aZ
+            val rep = RealmRepresentation()
+            rep.realm = "master"
+            rep.isEnabled = ```
+
+//            KeycloakBuilder.builder()
+//                .serverUrl(KEY_CLOAK_CONTAINER.authServerUrl)
+//                .realm(KeycloakContainer.MASTER_REALM)
+//                .clientId(KeycloakContainer.ADMIN_CLI_CLIENT)
+//                .username(KEY_CLOAK_CONTAINER.adminUsername)
+//                .password(KEY_CLOAK_CONTAINER.adminPassword)
+//                .build()
+//                .realms()
+//                .create(rep)
+
+//            keycloakContainer.keycloakAdminClient.realms().create(rep)
+
+//            KEY_CLOAK_ACCESS = KeycloakInitializers.keycloak(KEY_CLOAK_PROPERTIES, KEY_CLOAK_CONTAINER)
         }
-    }
+
+        @DynamicPropertySource
+        @JvmStatic
+        fun setDatasourceProperties(registry: DynamicPropertyRegistry) {
+            val issuer = "http://localhost:8081/auth/realms/$REALM"
+            registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri") { issuer }
+        }
+    }*/
 }

@@ -5,6 +5,7 @@ import com.sf.chatservice.chats.api.ChatCreatedResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import reactor.test.StepVerifier
+import java.time.Duration
 
 class MessageControllerTest : ChatBaseTest() {
 
@@ -14,8 +15,10 @@ class MessageControllerTest : ChatBaseTest() {
             .route("create-chat")
             .data("create")
             .retrieveMono(ChatCreatedResponse::class.java)
+            .timeout(Duration.ofSeconds(5))
 
-        StepVerifier.create(result, 1)
+        StepVerifier
+            .create(result, 1)
             .consumeNextWith {
                 assertThat(it.chatId).isNotNull()
             }

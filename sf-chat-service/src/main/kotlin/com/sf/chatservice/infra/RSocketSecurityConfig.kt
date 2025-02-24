@@ -36,7 +36,7 @@ class RSocketSecurityConfig(
                 authorize
                     .setup()
                     .permitAll()
-                    .anyExchange().authenticated()
+//                    .anyExchange().authenticated()
             }
             .jwt(Customizer.withDefaults())
             .build()
