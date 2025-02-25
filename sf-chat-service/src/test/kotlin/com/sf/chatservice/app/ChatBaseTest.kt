@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.rsocket.server.LocalRSocketServerPort
 import org.springframework.context.annotation.Import
 import org.springframework.messaging.rsocket.RSocketRequester
-import org.springframework.messaging.rsocket.RSocketStrategies
 import org.springframework.security.rsocket.metadata.BearerTokenAuthenticationEncoder
 import org.springframework.security.rsocket.metadata.BearerTokenMetadata
 import org.springframework.test.annotation.DirtiesContext
@@ -25,12 +24,6 @@ import java.net.URI
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//@TestPropertySource(
-//    properties = [
-//        "spring.rsocket.server.port=0",
-//        "eureka.client.enabled=false",
-//    ]
-//)
 @DirtiesContext
 @ActiveProfiles(value = ["test"])
 @Testcontainers
@@ -75,7 +68,7 @@ class ChatBaseTest {
     private fun setupRequesterFor(token: String): RSocketRequester {
         return builder
             .setupMetadata(BearerTokenMetadata(token), RSocketConstants.SIMPLE_AUTH)
-            .rsocketStrategies { v: RSocketStrategies.Builder -> v.encoder(BearerTokenAuthenticationEncoder()) }
+            .rsocketStrategies { it.encoder(BearerTokenAuthenticationEncoder()) }
             .websocket(URI.create("ws://localhost:$port"))
     }
 

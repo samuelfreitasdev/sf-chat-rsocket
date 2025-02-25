@@ -14,7 +14,6 @@ class MessageControllerTest : ChatBaseTest() {
             .route("create-chat")
             .data("create")
             .retrieveMono(ChatCreatedResponse::class.java)
-//            .timeout(Duration.ofSeconds(5))
 
         StepVerifier
             .create(result, 1)
