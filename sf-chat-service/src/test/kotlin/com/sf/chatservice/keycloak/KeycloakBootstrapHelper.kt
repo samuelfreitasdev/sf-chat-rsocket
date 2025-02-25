@@ -34,9 +34,9 @@ class KeycloakBootstrapHelper(
         val user = UserRepresentation()
             .apply {
                 this.username = username
-                firstName = "test"
-                lastName = "test"
-                email = "email@example.com"
+                firstName = username
+                lastName = username
+                email = "$username@example.com"
                 credentials = listOf(credential)
                 isEnabled = true
                 realmRoles = listOf("admin")
