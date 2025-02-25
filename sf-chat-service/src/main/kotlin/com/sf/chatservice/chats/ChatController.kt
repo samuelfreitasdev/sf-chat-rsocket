@@ -18,7 +18,7 @@ class ChatController(private val userChatsRepository: UserChatsPort) {
     private val logger = KotlinLogging.logger {}
 
     @MessageMapping("create-chat")
-    fun createChat(join: String, @AuthenticationPrincipal jwtMono: Mono<Jwt>): Mono<ChatCreatedResponse> {
+    fun createChat(join: String?, @AuthenticationPrincipal jwtMono: Mono<Jwt>): Mono<ChatCreatedResponse> {
         logger.info("Creating new chat")
         val chatId = UUID.randomUUID()
         val username = jwtUsername(jwtMono)
@@ -44,5 +44,5 @@ class ChatController(private val userChatsRepository: UserChatsPort) {
 
     private fun jwtUsername(jwtMono: Mono<Jwt>) = jwtMono
         .map(JwtUtil::extractUserName)
-        .doOnNext { logger.info("User name $it") }
+        .doOnNext { logger.info("Username $it") }
 }
