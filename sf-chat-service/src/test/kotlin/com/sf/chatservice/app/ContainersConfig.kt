@@ -1,5 +1,6 @@
 package com.sf.chatservice.app
 
+import com.sf.chatservice.keycloak.KeycloakBootstrapHelper
 import dasniko.testcontainers.keycloak.KeycloakContainer
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -23,7 +24,11 @@ class ContainersConfig {
     @Bean
     fun keycloak(registry: DynamicPropertyRegistry): KeycloakContainer {
         return KeycloakContainer(KeycloakConstants.KEYCLOAK_IMAGE)
-//            .withRealmImportFile(KeycloakConstants.REALM_IMPORT_FILE)
+    }
+
+    @Bean
+    fun keycloakBootstrapHelper(keycloakContainer: KeycloakContainer): KeycloakBootstrapHelper {
+        return KeycloakBootstrapHelper(keycloakContainer)
     }
 
     @Bean
