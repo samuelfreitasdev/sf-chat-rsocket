@@ -17,7 +17,6 @@ import org.springframework.security.rsocket.metadata.BearerTokenAuthenticationEn
 import org.springframework.security.rsocket.metadata.BearerTokenMetadata
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.TestPropertySource
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.net.URI
 
@@ -26,7 +25,12 @@ import java.net.URI
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestPropertySource(properties = ["spring.rsocket.server.port=0"])
+//@TestPropertySource(
+//    properties = [
+//        "spring.rsocket.server.port=0",
+//        "eureka.client.enabled=false",
+//    ]
+//)
 @DirtiesContext
 @ActiveProfiles(value = ["test"])
 @Testcontainers
