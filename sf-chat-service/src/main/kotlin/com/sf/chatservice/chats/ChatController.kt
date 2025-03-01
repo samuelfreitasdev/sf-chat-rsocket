@@ -12,21 +12,21 @@ import org.springframework.stereotype.Controller
 import reactor.core.publisher.Mono
 import java.util.*
 
+private val logger = KotlinLogging.logger {}
+
 @Controller
 class ChatController(private val userChatsRepository: UserChatsPort) {
 
-    private val logger = KotlinLogging.logger {}
-
     @MessageMapping("create-chat")
     fun createChat(join: String?, @AuthenticationPrincipal jwtMono: Mono<Jwt>): Mono<ChatCreatedResponse> {
-        logger.info("Creating new chat")
+        logger.info { "Creating new chat" }
         val chatId = UUID.randomUUID()
         val username = jwtUsername(jwtMono)
 
         return userChatsRepository.insertUserOnChat(username, chatId)
             .log()
             .map { ChatCreatedResponse(chatId) }
-            .doOnNext { logger.info("Added User [$username] on chat [$it].") }
+            .doOnNext { logger.info { "Added User [$username] on chat [$it]." } }
     }
 
     @MessageMapping("join-chat")
@@ -44,5 +44,5 @@ class ChatController(private val userChatsRepository: UserChatsPort) {
 
     private fun jwtUsername(jwtMono: Mono<Jwt>) = jwtMono
         .map(JwtUtil::extractUserName)
-        .doOnNext { logger.info("Username $it") }
+        .doOnNext { logger.info { "Username $it" } }
 }
