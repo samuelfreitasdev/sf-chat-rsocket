@@ -11,7 +11,7 @@ spring:
       uuid-representation: standard
   rsocket:
     server:
-      transport: websocket
+      transport: tcp
       port: 9090
   security:
     oauth2:
@@ -23,3 +23,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+server:
+  http2:
+    enabled: true
+  compression:
+    enabled: true
