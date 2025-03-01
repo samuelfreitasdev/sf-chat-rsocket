@@ -28,10 +28,10 @@ extra["springCloudVersion"] = "2024.0.0"
 val mockitoAgent = configurations.create("mockitoAgent")
 
 dependencies {
-    implementation("io.netty:netty-all:4.1.118.Final")
-    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.118.Final")
+    runtimeOnly("io.netty:netty-all:4.1.118.Final")
 
     implementation("io.projectreactor:reactor-tools")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
     implementation("org.springframework.cloud:spring-cloud-starter")
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0") // To spring cloud load balancer
@@ -49,16 +49,13 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
-    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-
-    implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -73,7 +70,6 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mongodb")
     testImplementation("com.github.dasniko:testcontainers-keycloak:3.6.0")
-    testImplementation("org.testcontainers:mongodb:1.20.4")
 
     testImplementation("org.keycloak:keycloak-admin-client:26.0.4")
 
