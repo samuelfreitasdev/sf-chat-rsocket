@@ -24,6 +24,7 @@ class ContainersConfig {
     @Bean
     fun keycloak(registry: DynamicPropertyRegistry): KeycloakContainer {
         return KeycloakContainer(KeycloakConstants.KEYCLOAK_IMAGE)
+            .withReuse(true)
     }
 
     @Bean

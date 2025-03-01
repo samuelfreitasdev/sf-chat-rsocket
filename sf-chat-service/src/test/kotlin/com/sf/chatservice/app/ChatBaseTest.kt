@@ -17,7 +17,6 @@ import org.springframework.security.rsocket.metadata.BearerTokenMetadata
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.net.URI
 
 @SpringBootTest(
     classes = [ChatApplication::class],
@@ -69,7 +68,8 @@ class ChatBaseTest {
         return builder
             .setupMetadata(BearerTokenMetadata(token), RSocketConstants.SIMPLE_AUTH)
             .rsocketStrategies { it.encoder(BearerTokenAuthenticationEncoder()) }
-            .websocket(URI.create("ws://localhost:$port"))
+            .tcp("localhost", port!!)
+//            .websocket(URI.create("ws://localhost:$port"))
     }
 
 }

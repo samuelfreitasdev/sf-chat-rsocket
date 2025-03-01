@@ -8,6 +8,7 @@ import reactor.test.StepVerifier
 
 class MessageControllerTest : ChatBaseTest() {
 
+    //    @WithMockUser
     @Test
     fun userCanCreateChat() {
         val result = requesterUser1!!
