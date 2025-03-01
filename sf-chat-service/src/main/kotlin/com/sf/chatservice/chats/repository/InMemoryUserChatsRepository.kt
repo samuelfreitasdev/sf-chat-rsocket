@@ -1,11 +1,14 @@
 package com.sf.chatservice.chats.repository
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+
+private val logger = KotlinLogging.logger {}
 
 @Profile("test")
 @Repository
@@ -14,7 +17,9 @@ class InMemoryUserChatsRepository(
 ) : UserChatsPort {
 
     override fun insertUserOnChat(username: Mono<String>, chatId: UUID): Mono<Boolean> {
-        return username.mapNotNull { userChats.putIfAbsent(it, setOf(chatId)) }
+        return username
+            .doOnNext { logger.info { "[$it] user added to chat $chatId" } }
+            .mapNotNull { userChats.putIfAbsent(it, setOf(chatId)) }
             .log()
             .map { true }
     }
