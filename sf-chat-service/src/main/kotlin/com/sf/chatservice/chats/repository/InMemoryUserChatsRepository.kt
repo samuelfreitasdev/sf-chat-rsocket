@@ -18,9 +18,8 @@ class InMemoryUserChatsRepository(
 
     override fun insertUserOnChat(username: Mono<String>, chatId: UUID): Mono<Boolean> {
         return username
+            .mapNotNull { userChats.computeIfAbsent(it) { setOf(chatId) } }
             .doOnNext { logger.info { "[$it] user added to chat $chatId" } }
-            .mapNotNull { userChats.putIfAbsent(it, setOf(chatId)) }
-            .log()
             .map { true }
     }
 
