@@ -2,13 +2,12 @@ package com.sf.chatservice.app.message
 
 import com.sf.chatservice.app.ChatBaseTest
 import com.sf.chatservice.chats.api.ChatCreatedResponse
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import reactor.test.StepVerifier
+import kotlin.test.assertNotNull
 
 class MessageControllerTest : ChatBaseTest() {
 
-    //    @WithMockUser
     @Test
     fun userCanCreateChat() {
         val result = requesterUser1!!
@@ -17,10 +16,8 @@ class MessageControllerTest : ChatBaseTest() {
             .retrieveMono(ChatCreatedResponse::class.java)
 
         StepVerifier
-            .create(result, 1)
-            .consumeNextWith {
-                assertThat(it.chatId).isNotNull()
-            }
+            .create(result)
+            .assertNext { assertNotNull(it.chatId) }
             .verifyComplete()
     }
 
