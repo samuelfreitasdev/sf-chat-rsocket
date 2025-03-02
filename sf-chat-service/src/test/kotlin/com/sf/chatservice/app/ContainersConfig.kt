@@ -15,7 +15,7 @@ class ContainersConfig {
 
     @Bean
     fun keycloakRegistrar(keycloak: KeycloakContainer): DynamicPropertyRegistrar {
-        val uri = "${keycloak.authServerUrl}/realms/${keycloak.keycloakAdminClient.realms().findAll().first().realm}"
+        val uri = "${keycloak.authServerUrl}/realms/${KeycloakBootstrapHelper.DEFAULT_REALM_NAME}"
         return DynamicPropertyRegistrar { registry: DynamicPropertyRegistry ->
             registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri") { uri }
         }
@@ -41,19 +41,10 @@ class ContainersConfig {
 
     object KeycloakConstants {
         const val KEYCLOAK_IMAGE = "quay.io/keycloak/keycloak:latest"
-        const val ADMIN_USERNAME = "admin"
-        const val ADMIN_PASS = "admin"
-        const val REALM_IMPORT_FILE = "./sf-chat-realm.json"
-        const val REALM_NAME = "sf-chat"
     }
 
     object MongoDbConstants {
         const val MONGODB_IMAGE: String = "mongo:latest"
-        const val BITNAMI_MONGODB_IMAGE: String = "bitnami/mongodb:latest"
-        const val USERNAME: String = "user"
-        const val PASSWORD: String = "password"
-        const val DATABASE: String = "db"
-        const val PORT: Int = 27017
     }
 
 }

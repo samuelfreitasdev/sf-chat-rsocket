@@ -65,9 +65,10 @@ class ChatBaseTest {
     }
 
     private fun setupRequesterFor(token: String): RSocketRequester {
+        @Suppress("DEPRECATION")
         return builder
-            .setupMetadata(BearerTokenMetadata(token), RSocketConstants.SIMPLE_AUTH)
             .rsocketStrategies { it.encoder(BearerTokenAuthenticationEncoder()) }
+            .setupMetadata(token, BearerTokenMetadata.BEARER_AUTHENTICATION_MIME_TYPE)
             .tcp("localhost", port!!)
 //            .websocket(URI.create("ws://localhost:$port"))
     }
