@@ -12,12 +12,15 @@ spring:
   rsocket:
     server:
       transport: tcp
-      port: 9090
+  #      port: 9090
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/auth/realms/sf-chat
+  threads:
+    virtual:
+      enabled: true
 
 eureka:
   client:
