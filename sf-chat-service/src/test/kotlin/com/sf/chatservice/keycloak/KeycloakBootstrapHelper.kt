@@ -82,7 +82,6 @@ class KeycloakBootstrapHelper(
 
     companion object {
         val DEFAULT_CLI_CLIENT = KeycloakClient("test-client", "secret")
-
-        const val DEFAULT_REALM_NAME = "realm"
+        const val DEFAULT_REALM_NAME = "sf-chat-test"
     }
 }
