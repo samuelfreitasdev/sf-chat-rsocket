@@ -28,7 +28,7 @@ class MongoChatsRepository(
                 .defaultIfEmpty(UserChats(username = _username, chatId))
 
             return@flatMap mongoTemplate.save(document)
-                .doOnNext { logger.info("Saving document $_username:$chatId") }
+                .doOnNext { logger.info { "Saving document $_username:$chatId" } }
                 .map { true }
         }
     }
@@ -39,11 +39,11 @@ class MongoChatsRepository(
             .flatMap { query ->
                 mongoTemplate
                     .findOne(query, UserChats::class.java)
-                    .doOnNext { logger.info("Found user [${it.id}:${it.username}]") }
+                    .doOnNext { logger.info { "Found user [${it.id}:${it.username}]" } }
                     .flatMapIterable { it.chats }
                     .collect(Collectors.toSet())
                     .defaultIfEmpty(emptySet())
-                    .doOnNext { chats -> logger.info("Chats size ${chats.size}") }
+                    .doOnNext { chats -> logger.info { "Chats size ${chats.size}" } }
             }
     }
 
