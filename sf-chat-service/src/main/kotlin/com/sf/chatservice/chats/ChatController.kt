@@ -23,10 +23,10 @@ class ChatController(private val userChatsRepository: UserChatsPort) {
         val chatId = UUID.randomUUID()
         val username = jwtUsername(jwtMono)
 
-        return userChatsRepository.insertUserOnChat(username, chatId)
+        return userChatsRepository
+            .insertUserOnChat(username, chatId)
             .log()
             .map { ChatCreatedResponse(chatId) }
-            .doOnNext { logger.info { "Added User [$username] on chat [$it]." } }
     }
 
     @MessageMapping("join-chat")
@@ -44,5 +44,4 @@ class ChatController(private val userChatsRepository: UserChatsPort) {
 
     private fun jwtUsername(jwtMono: Mono<Jwt>) = jwtMono
         .map(JwtUtil::extractUserName)
-        .doOnNext { logger.info { "Username $it" } }
 }
