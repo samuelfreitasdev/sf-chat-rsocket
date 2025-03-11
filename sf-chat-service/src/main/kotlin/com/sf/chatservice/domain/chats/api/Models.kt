@@ -1,4 +1,4 @@
-package com.sf.chatservice.chats.api
+package com.sf.chatservice.domain.chats.api
 
 import java.util.*
 

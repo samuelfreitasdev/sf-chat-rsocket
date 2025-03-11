@@ -1,4 +1,4 @@
-package com.sf.chatservice.chats.repository
+package com.sf.chatservice.domain.chats.repository
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Profile

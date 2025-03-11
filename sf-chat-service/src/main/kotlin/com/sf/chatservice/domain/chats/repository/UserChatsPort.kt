@@ -1,4 +1,4 @@
-package com.sf.chatservice.chats.repository
+package com.sf.chatservice.domain.chats.repository
 
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

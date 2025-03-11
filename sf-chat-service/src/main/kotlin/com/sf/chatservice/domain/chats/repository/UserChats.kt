@@ -1,4 +1,4 @@
-package com.sf.chatservice.chats.repository
+package com.sf.chatservice.domain.chats.repository
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed

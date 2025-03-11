@@ -1,8 +1,8 @@
 package com.sf.chatservice.app.message
 
 import com.sf.chatservice.app.ChatBaseTest
-import com.sf.chatservice.chats.api.ChatCreatedResponse
-import com.sf.chatservice.chats.api.JoinChatRequest
+import com.sf.chatservice.domain.chats.api.ChatCreatedResponse
+import com.sf.chatservice.domain.chats.api.JoinChatRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.core.ParameterizedTypeReference

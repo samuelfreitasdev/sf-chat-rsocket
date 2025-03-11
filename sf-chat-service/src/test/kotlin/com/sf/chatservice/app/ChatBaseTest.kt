@@ -1,7 +1,7 @@
 package com.sf.chatservice.app
 
 import com.sf.chatservice.ChatApplication
-import com.sf.chatservice.chats.repository.UserChatsPort
+import com.sf.chatservice.domain.chats.repository.UserChatsPort
 import com.sf.chatservice.keycloak.KeycloakBootstrapHelper
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach

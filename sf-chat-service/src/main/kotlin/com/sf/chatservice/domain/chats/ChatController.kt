@@ -1,9 +1,9 @@
-package com.sf.chatservice.chats
+package com.sf.chatservice.domain.chats
 
-import com.sf.chatservice.chats.api.ChatCreatedResponse
-import com.sf.chatservice.chats.api.JoinChatRequest
-import com.sf.chatservice.chats.repository.UserChatsPort
 import com.sf.chatservice.common.JwtUtil
+import com.sf.chatservice.domain.chats.api.ChatCreatedResponse
+import com.sf.chatservice.domain.chats.api.JoinChatRequest
+import com.sf.chatservice.domain.chats.repository.UserChatsPort
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.security.core.annotation.AuthenticationPrincipal
